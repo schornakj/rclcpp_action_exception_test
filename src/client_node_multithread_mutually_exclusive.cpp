@@ -1,14 +1,14 @@
-#include <action_client_test/client_node.h>
+#include <action_client_test/client_node_multithread_mutually_exclusive.h>
 
-ClientNode::ClientNode()
+ClientNodeMultithreadMutuallyExclusive::ClientNodeMultithreadMutuallyExclusive()
   : Node("action_test_client_node")
-  , cb_group_reentrant_(create_callback_group(rclcpp::callback_group::CallbackGroupType::Reentrant))
-  , client_(rclcpp_action::create_client<Fibonacci>(this, "/fibonacci", cb_group_reentrant_))
-  , timer_(create_wall_timer(std::chrono::duration<double>(1.0), std::bind(&ClientNode::sendGoal, this)))
+  , cb_group_mutually_exclusive_(create_callback_group(rclcpp::callback_group::CallbackGroupType::MutuallyExclusive))
+  , client_(rclcpp_action::create_client<Fibonacci>(this, "/fibonacci", cb_group_mutually_exclusive_))
+  , timer_(create_wall_timer(std::chrono::duration<double>(1.0), std::bind(&ClientNodeMultithreadMutuallyExclusive::sendGoal, this)))
 {
 }
 
-void ClientNode::sendGoal()
+void ClientNodeMultithreadMutuallyExclusive::sendGoal()
 {
   RCLCPP_INFO(get_logger(), "Sending goal");
 
@@ -16,6 +16,7 @@ void ClientNode::sendGoal()
   goal.order = 10;
 
   rclcpp_action::Client<Fibonacci>::SendGoalOptions options;
+  options.goal_response_callback = [](std::shared_future<ClientGoalHandleFibonacci::SharedPtr> future) { (void) future; };
   options.result_callback = [](const ClientGoalHandleFibonacci::WrappedResult& result) { (void) result; };
 
   auto gh_future = client_->async_send_goal(goal, options);
@@ -44,7 +45,7 @@ void ClientNode::sendGoal()
 int main(int argc, char* argv[])
 {
   rclcpp::init(argc, argv);
-  auto node = std::make_shared<ClientNode>();
+  auto node = std::make_shared<ClientNodeMultithreadMutuallyExclusive>();
   rclcpp::executors::MultiThreadedExecutor executor;
   executor.add_node(node);
   executor.spin();

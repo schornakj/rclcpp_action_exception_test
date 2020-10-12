@@ -4,13 +4,13 @@
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <example_interfaces/action/fibonacci.hpp>
 
-class ClientNode : public rclcpp::Node
+class ClientNodeMultithreadReentrant : public rclcpp::Node
 {
 public:
   using Fibonacci = example_interfaces::action::Fibonacci;
   using ClientGoalHandleFibonacci = rclcpp_action::ClientGoalHandle<Fibonacci>;
 
-  explicit ClientNode();
+  explicit ClientNodeMultithreadReentrant();
 
 private:
   void sendGoal();
