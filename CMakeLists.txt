@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5.0)
-project(action_test VERSION 0.0.0 LANGUAGES CXX)
+project(action_exception_test VERSION 0.0.0 LANGUAGES CXX)
 
 find_package(ament_cmake REQUIRED)
 find_package(example_interfaces REQUIRED)

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>action_test</name>
+  <name>action_exception_test</name>
   <version>0.0.0</version>
   <description>Nodes to test action callback groups</description>
   <maintainer email="joe.schornak@gmail.com">Joseph Schornak</maintainer>
