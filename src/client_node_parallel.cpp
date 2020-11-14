@@ -34,20 +34,10 @@ void ClientNodeParallel::asyncHandleClientReq(const std::size_t& order, const rc
   options.goal_response_callback = [](std::shared_future<ClientGoalHandleFibonacci::SharedPtr> future) { (void) future; };
   options.result_callback = [](const ClientGoalHandleFibonacci::WrappedResult& result) { (void) result; };
 
-  std::shared_future<ClientGoalHandleFibonacci::SharedPtr> gh_future;
-  {
-    client_mutex_.lock();
-    gh_future = client->async_send_goal(goal, options);
-    client_mutex_.unlock();
-  }
+  std::shared_future<ClientGoalHandleFibonacci::SharedPtr> gh_future = client->async_send_goal(goal, options);
   gh_future.wait();
 
-  std::shared_future<ClientGoalHandleFibonacci::WrappedResult> async_res_future;
-  {
-    client_mutex_.lock();
-    async_res_future = gh_future.get()->async_result();
-    client_mutex_.unlock();
-  }
+  std::shared_future<ClientGoalHandleFibonacci::WrappedResult> async_res_future = gh_future.get()->async_result();
   async_res_future.wait();
 
   auto result = async_res_future.get();
