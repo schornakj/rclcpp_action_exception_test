@@ -45,9 +45,23 @@ target_link_libraries(${PROJECT_NAME}_client_node_multithread_mutually_exclusive
   ${rclcpp_LIBRARIES}
   ${rclcpp_action_LIBRARIES})
 
+add_executable(${PROJECT_NAME}_client_node_parallel
+  src/client_node_parallel.cpp)
+target_include_directories(${PROJECT_NAME}_client_node_parallel PUBLIC
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<INSTALL_INTERFACE:include>"
+  ${example_interfaces_INCLUDE_DIRS}
+  ${rclcpp_INCLUDE_DIRS}
+  ${rclcpp_action_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME}_client_node_parallel
+  ${example_interfaces_LIBRARIES}
+  ${rclcpp_LIBRARIES}
+  ${rclcpp_action_LIBRARIES})
+
 install(TARGETS
   ${PROJECT_NAME}_client_node_multithread_reentrant
   ${PROJECT_NAME}_client_node_multithread_mutually_exclusive
+  ${PROJECT_NAME}_client_node_parallel
   ${PROJECT_NAME}_server_node
         RUNTIME DESTINATION lib/${PROJECT_NAME})
 

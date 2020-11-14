@@ -30,7 +30,7 @@ rclcpp_action::CancelResponse ServerNode::handleActionCancel(const std::shared_p
 
 void ServerNode::handleActionAccepted(const std::shared_ptr<ServerGoalHandleFibonacci> goal_handle)
 {
-    std::thread{std::bind(&ServerNode::execute, this, _1), goal_handle}.detach();
+  std::thread{std::bind(&ServerNode::execute, this, _1), goal_handle}.detach();
 }
 
 void ServerNode::execute(const std::shared_ptr<ServerGoalHandleFibonacci> goal_handle)
@@ -48,6 +48,8 @@ void ServerNode::execute(const std::shared_ptr<ServerGoalHandleFibonacci> goal_h
       goal_handle->canceled(result);
       return;
     }
+
+    std::this_thread::sleep_for(std::chrono::duration<double>(0.1));
 
     sequence.push_back(sequence[i] + sequence[i - 1]);
     goal_handle->publish_feedback(feedback);
