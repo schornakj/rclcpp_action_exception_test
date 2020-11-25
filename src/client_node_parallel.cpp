@@ -7,9 +7,9 @@ ClientNodeParallel::ClientNodeParallel()
   : Node("action_test_client_node")
   , cb_group_mutually_exclusive_(create_callback_group(rclcpp::callback_group::CallbackGroupType::MutuallyExclusive))
   , client_(rclcpp_action::create_client<Fibonacci>(this, "/fibonacci", cb_group_mutually_exclusive_))
-  , timer_(create_wall_timer(std::chrono::duration<double>(0.1), std::bind(&ClientNodeParallel::sendGoal, this)))
+  , timer_(create_wall_timer(std::chrono::duration<double>(0.01), std::bind(&ClientNodeParallel::sendGoal, this)))
   , n_reqs_in_progress_{0}
-  , max_parallel_reqs_{30}
+  , max_parallel_reqs_{40}
 {
 }
 
