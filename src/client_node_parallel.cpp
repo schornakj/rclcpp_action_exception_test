@@ -10,6 +10,7 @@ ClientNodeParallel::ClientNodeParallel()
   , timer_(create_wall_timer(std::chrono::duration<double>(0.01), std::bind(&ClientNodeParallel::sendGoal, this)))
   , n_reqs_in_progress_{0}
   , max_parallel_reqs_{40}
+  , n_completed_{0}
 {
 }
 
@@ -52,7 +53,9 @@ void ClientNodeParallel::asyncHandleClientReq(const std::size_t& order, const rc
   for (auto& seq : result.result->sequence)
     stream << seq << " ";
 
-  RCLCPP_INFO_STREAM(get_logger(), "Action succeeded! " << stream.str());
+  n_completed_++;
+
+  RCLCPP_INFO_STREAM(get_logger(), "Action #" << n_completed_ << " succeeded! " << stream.str());
 
   n_reqs_in_progress_--;
 }

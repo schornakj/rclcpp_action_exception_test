@@ -22,4 +22,5 @@ private:
   rclcpp::TimerBase::SharedPtr timer_;
   std::atomic_uint n_reqs_in_progress_;
   const std::size_t max_parallel_reqs_;
+  std::atomic_uint n_completed_;
 };
