@@ -49,8 +49,6 @@ void ServerNode::execute(const std::shared_ptr<ServerGoalHandleFibonacci> goal_h
       return;
     }
 
-//    std::this_thread::sleep_for(std::chrono::duration<double>(0.1));
-
     sequence.push_back(sequence[i] + sequence[i - 1]);
     goal_handle->publish_feedback(feedback);
   }
